@@ -28,7 +28,11 @@ const index = (req, res) => {
 // SHOW: lettura di un singolo post //
 const show = (req, res) => {
   const id = req.params.id;
-  const sql = "SELECT * FROM posts WHERE id = ?";
+  const sql = `SELECT posts.id AS post_id, posts.title, posts.content, tags.id AS tag_id, tags.label
+FROM posts
+JOIN post_tag ON posts.id = post_tag.post_id
+JOIN tags ON tags.id = post_tag.tag_id
+WHERE posts.id = ?;`;
 
   connection.query(sql, [id], (err, results) => {
     if (results.length === 0) {
