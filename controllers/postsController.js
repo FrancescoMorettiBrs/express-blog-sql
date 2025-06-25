@@ -2,6 +2,7 @@
 // Importo il mio array dal file data.js //
 import { posts } from "../data.js";
 import { checkPostExistMiddleware } from "../middlewares/checkPostExistMiddleware.js";
+import connection from "../db.js";
 // Creo una function per l'error 404 che si ripete più volte //
 // const sendNotFound = (res) => {
 //   res.status(404);
@@ -12,29 +13,18 @@ import { checkPostExistMiddleware } from "../middlewares/checkPostExistMiddlewar
 
 // INDEX: lettura di tutti i post //
 const index = (req, res) => {
-  const postsFilter = req.query.tags;
-  const { titolo, contenuto, tags } = req.query;
+  const sql = "SELECT * FROM posts";
+  connection.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: "Database query failed" });
 
-  let result = [...posts];
+    res.status(200).json({
+      data: results,
+    });
 
-  if (postsFilter !== undefined) {
-    result = result.filter((curPost) => curPost.tags.includes(postsFilter));
-  }
-
-  // Esempi di filtraggio
-  // if (titolo) {
-  //   result = posts.filter((curPost) => curPost.titolo.toLowerCase().includes(titolo.toLowerCase()));
-  // }
-
-  // if (contenuto) {
-  //   result = posts.filter((curPost) => curPost.contenuto.toLowerCase().includes(contenuto.toLowerCase()));
-  // }
-
-  res.json({
-    data: result,
-    count: result.length,
+    console.log(results); // facoltativo, per debug
   });
 };
+
 // SHOW: lettura di un singolo post //
 const show = (req, res) => {
   const post = posts[req.postIndex];
@@ -73,8 +63,17 @@ const update = (req, res) => {
 };
 // DESTROY: cancellazione di un post //
 const destroy = (req, res) => {
-  posts.splice(req.postIndex, 1);
-  res.sendStatus(204);
+  const id = req.params.id;
+  const sql = "DELETE FROM posts WHERE id = ?";
+
+  connection.query(sql, [id], (err, results) => {
+    if (err) {
+      console.log("Errore");
+    } else {
+      console.log(results);
+      res.sendStatus(204);
+    }
+  });
 };
 
 // creo un oggetto che comprende tutte le mie funzioni e lo esporto //

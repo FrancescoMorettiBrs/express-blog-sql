@@ -4,6 +4,8 @@ import router from "./routers/post.js";
 import { routeNotFound } from "./middlewares/routeNotFound.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { loggingMiddleware } from "./middlewares/loggingMiddleware.js";
+import db from './db.js';
+
 
 // Creo l'applicazione web con express //
 const app = express();
@@ -24,7 +26,7 @@ app.get("/", (req, res) => {
   res.json(resData);
 });
 
-app.use("/post", router);
+app.use("/posts", router);
 // Registro un errore se la rotta non esiste
 app.use(routeNotFound)
 // Registrazione errore interno del server 
