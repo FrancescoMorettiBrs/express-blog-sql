@@ -27,10 +27,19 @@ const index = (req, res) => {
 
 // SHOW: lettura di un singolo post //
 const show = (req, res) => {
-  const post = posts[req.postIndex];
+  const id = req.params.id;
+  const sql = "SELECT * FROM posts WHERE id = ?";
 
-  res.json({
-    data: post,
+  connection.query(sql, [id], (err, results) => {
+    if (results.length === 0) {
+      res.status(404).json({
+        error: "Post non trovato",
+      });
+    } else {
+      res.json({
+        data: results,
+      });
+    }
   });
 };
 // STORE: creazione di un post //
