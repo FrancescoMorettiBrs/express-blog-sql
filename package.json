@@ -1,0 +1,23 @@
+{
+  "name": "express-blog-api-crud",
+  "version": "1.0.0",
+  "description": "Api-crud",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node --watch app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FrancescoMorettiBrs/express-blog-api-crud.git"
+  },
+  "type": "module",
+  "author": "Moretti Francesco",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FrancescoMorettiBrs/express-blog-api-crud/issues"
+  },
+  "homepage": "https://github.com/FrancescoMorettiBrs/express-blog-api-crud#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
